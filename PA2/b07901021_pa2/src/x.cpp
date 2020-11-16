@@ -8,10 +8,9 @@
 #include <cstring>
 #include <fstream>
 #include <vector>
-#include "../lib/tm_usage.h"
+#include <algorithm> // for sorting vector
 #include "MaxPlanarSubset.h"
-
-bool DEBUG = false;
+bool DEBUG = true;
 
 using namespace std;
 
@@ -25,8 +24,6 @@ int main(int argc, char* argv[])
        help_message();
        return 0;
     }
-    CommonNs::TmUsage tmusg;
-    CommonNs::TmStat stat;
 
     //////////// read the input file /////////////
     
@@ -52,7 +49,7 @@ int main(int argc, char* argv[])
             cout << endl;
         }
     }
-    tmusg.periodStart();
+
     // process the data
     if(DEBUG) cout << "processing..." << endl;
     ChordSet C(N);
@@ -72,56 +69,64 @@ int main(int argc, char* argv[])
     //////////// Algorithm ////////////
     if(DEBUG) cout << "counting..." << endl;
     
-    // char  **a;
-    // int i ,j;
-    // char ch = 'a';
-    // a = (char **)malloc(sizeof( char *) * ROW)
-    // for (i = 0; i < ROW; i++)
-    // {
-    //     a[i] = (char *)malloc(sizeof(char) *COL);
-    // }
-    short **M;
-    int **M_aux;
-    M = (short **)malloc(sizeof(short*) * N);
-    M_aux = (int **)malloc(sizeof(int*) * N);
+    vector<vector<Node>> M;
     for(int i = 0; i < N; i++){
-        M[i] = (short *)malloc(sizeof(short) * N);
-        M_aux[i] = (int *)malloc(sizeof(int) * N);
+        vector<Node> row;
+        for(int j = 0; j <= i; j++){
+            row.push_back(Node(0, i, j));
+        }
+        M.push_back(row);
     }
-    
     for(int l = 1; l < N; l++){
         for(int i = 0; i < N - l; i++){
-            int j = i + l;      
+            int j = i + l;
+            
             int k = C.find_connection(j);
+            // if(DEBUG) cout << "assign M[" << i  << "][" << j << "]"<< endl; 
             
             if((k > j) || (k < i)){    
-                M[i][j] = 1;
-                M_aux[i][j] = M_aux[i][j-1];
+                M[i].push_back(Node(M[i][j-1].get_num(), i, j));
+                M[i][j].path_assign(&(M[i][j-1]));
             }
             
             else if(k == i){    
-                M[i][j] = 2;
-                M_aux[i][j] = M_aux[i+1][j-1] + 1;
+                M[i].push_back(Node(M[i+1][j-1].get_num(), i, j));
+                M[i][j].path_assign(&(M[i+1][j-1]));
+                M[i][j].chord_assign(k);
             }
             
-            else if(k < j && k > i){                
-                int A = M_aux[i][j-1];
-                int B = M_aux[i][k-1] + 1 + M_aux[k+1][j-1];
+            else if(k < j && k > i){
+                int A = M[i][j-1].get_num();
+                int B = M[i][k-1].get_num() + 1 + M[k+1][j-1].get_num();
+                
                 if(A >= B){
-                    M[i][j] = 3;
-                    M_aux[i][j] = A;
+                    M[i].push_back(Node(A, i, j));
+                    M[i][j].path_assign(&(M[i][j-1]));
                 }
                 else{
-                    M[i][j] = 4;
-                    M_aux[i][j] = B;
+                    M[i].push_back(Node(B, i, j));
+                    M[i][j].path_assign(&(M[i][k-1]));
+                    M[i][j].path_assign(&(M[k+1][j-1]));
+                    M[i][j].chord_assign(k);
                 }
             }
+            else{ cout << "FUCKED UP" << endl;}
         }
     }
-    vector<int> chordlist;
-    traverse(0, N-1, &C, &chordlist, M);
     
-    // sort(chordlist.begin(), chordlist.end());
+    if(DEBUG) cout << "writing output..." << endl;    
+    
+    vector<int> chordlist;
+    
+    M[0][N-1].traverse(&chordlist);
+    if(DEBUG){
+        cout << "N = " << chordlist.size() << endl;
+        for(int i = 0; i < chordlist.size(); i++){
+            cout << chordlist[i] << " " <<  C.find_connection(chordlist[i]) << endl;
+        }
+    }
+    if(DEBUG) cout << "starting sort..." << endl;
+    sort(chordlist.begin(), chordlist.end());
     
     if(DEBUG){
         cout << "N = " << chordlist.size() << endl;
@@ -131,9 +136,6 @@ int main(int argc, char* argv[])
     }
     
     // need to be modified
-    tmusg.getPeriodUsage(stat);
-    cout <<"The total CPU time: " << (stat.uTime + stat.sTime) / 1000.0 << "ms" << endl;
-    cout <<"memory: " << stat.vmPeak << "KB" << endl; // print peak memory
     //////////// write the output file ///////////
     
     fout << chordlist.size() << endl;

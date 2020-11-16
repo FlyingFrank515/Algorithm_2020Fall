@@ -10,6 +10,8 @@
 
 #include <iostream>
 #include <vector>
+#include <stdio.h>
+#include <stdlib.h>
 using namespace std;
 
 class ChordSet{
@@ -29,14 +31,20 @@ class ChordSet{
 class Node{
     public:
         Node();
-        Node(vector<int>*);
-        void data_assign(int);
-        void data_clone(vector<int>*);
-        vector<int>* get_data_address();
+        Node(int, int, int);
+        void path_assign(Node*);
         int get_num();
-        void print_all_chords(ChordSet*);
+        void num_assign(int);
+        void chord_assign(int);
+        void traverse(vector<int>*);
+        
     private:
-        vector<int>* data; // start points of all chords in range[i,j]
+        vector<Node*> path;
+        int new_chord;
+        int num;
+        int i;
+        int j;
+        
 };
-
+void traverse(int, int, ChordSet*, vector<int>*, short**);
 #endif

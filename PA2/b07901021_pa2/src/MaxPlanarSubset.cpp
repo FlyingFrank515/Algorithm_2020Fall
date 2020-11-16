@@ -42,28 +42,65 @@ void ChordSet::test(){
     }
 }
 
-Node::Node(){}
+Node::Node(){new_chord = -1;}
+Node::Node(int n, int x, int y){
+    num = n;
+    new_chord = -1;
+    i = x;
+    j = y;
+}
 
-Node::Node(vector<int>* d){
-    data = d;
+void Node::path_assign(Node* n){
+    path.push_back(n);
 }
-void Node::data_assign(int in){
-    data->push_back(in);
-}
-void Node::data_clone(vector<int>* source){
-    for(int i = 0; i < source->size(); i++){
-        data->push_back((*source)[i]);
-    }
-}
-vector<int>* Node::get_data_address(){
-    return data;
-}
+
 int Node::get_num(){
-    return data->size();
+    return num;
 }
-void Node::print_all_chords(ChordSet* connect){
-    cout << "N = " << data->size() << endl;
-    for(int i = 0; i < data->size(); i++){
-        cout << (*data)[i] << " " << connect->find_connection((*data)[i]) << endl;
+
+void Node::num_assign(int n){
+    num = n;
+}
+
+void Node::chord_assign(int c){
+    new_chord = c;
+}
+
+void Node::traverse(vector<int>* list){
+    // cout << "i,j=" << i  <<" "<< j << endl;
+    // if(new_chord != -1){
+    //     cout << "newly added: " << new_chord << endl;
+    //     list->push_back(new_chord);
+    // }
+    // for(int k = 0; k < path.size(); k++){
+    //     path[k]->traverse(list); 
+    // }
+}
+
+
+void traverse(int i, int j, ChordSet* C, vector<int>* list, short** M){
+    switch(M[i][j]){
+        case 1:
+            traverse(i, j-1, C, list, M);
+            break;
+        
+        case 2:
+            list->push_back(i);
+            traverse(i+1, j-1, C, list, M);
+            break;
+        
+        case 3:
+            traverse(i, j-1, C, list, M);
+            break;
+        
+        case 4:
+            traverse(i, C->find_connection(j)-1, C, list, M);
+            list->push_back(C->find_connection(j));
+            traverse(C->find_connection(j)+1, j-1, C, list, M);
+            break;
+        
+        default:
+            return;
     }
+
 }
