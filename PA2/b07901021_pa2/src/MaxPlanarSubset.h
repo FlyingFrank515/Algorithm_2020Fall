@@ -28,5 +28,5 @@ class ChordSet{
 
 };
 
-void traverse(int, int, ChordSet*, vector<int>*, short**);
+void traverse(int, int, ChordSet*, vector<int>*, int**);
 #endif

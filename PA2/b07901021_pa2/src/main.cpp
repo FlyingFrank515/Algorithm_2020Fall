@@ -72,40 +72,37 @@ int main(int argc, char* argv[])
     //////////// Algorithm ////////////
     if(DEBUG) cout << "counting..." << endl;
 
-    short **M;
-    int **M_aux;
-    M = (short **)malloc(sizeof(short*) * N);
-    M_aux = (int **)malloc(sizeof(int*) * N);
+    int **M;
+    M = (int **)malloc(sizeof(int*) * N);
     for(int i = 0; i < N; i++){
-        M[i] = (short *)malloc(sizeof(short) * N);
-        M_aux[i] = (int *)malloc(sizeof(int) * N);
+        M[i] = (int *)malloc(sizeof(int) * N);
     }
     
-    for(int l = 1; l < N; l++){
-        for(int i = 0; i < N - l; i++){
+    for(int l = 0; l < N; l++){
+        for(int i = 0; i < N - l; i++){        
             int j = i + l;      
+            if(i == j){
+                M[i][j] = 0;
+                continue;
+            } 
             int k = C.find_connection(j);
             
             if((k > j) || (k < i)){    
-                M[i][j] = 1;
-                M_aux[i][j] = M_aux[i][j-1];
+                M[i][j] = M[i][j-1];
             }
             
             else if(k == i){    
-                M[i][j] = 2;
-                M_aux[i][j] = M_aux[i+1][j-1] + 1;
+                M[i][j] = M[i+1][j-1] + 1;
             }
             
             else if(k < j && k > i){                
-                int A = M_aux[i][j-1];
-                int B = M_aux[i][k-1] + 1 + M_aux[k+1][j-1];
+                int A = M[i][j-1];
+                int B = M[i][k-1] + 1 + M[k+1][j-1];
                 if(A >= B){
-                    M[i][j] = 3;
-                    M_aux[i][j] = A;
+                    M[i][j] = A;
                 }
                 else{
-                    M[i][j] = 4;
-                    M_aux[i][j] = B;
+                    M[i][j] = B;
                 }
             }
         }
