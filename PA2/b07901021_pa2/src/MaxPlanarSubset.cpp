@@ -42,42 +42,6 @@ void ChordSet::test(){
     }
 }
 
-Node::Node(){new_chord = -1;}
-Node::Node(int n, int x, int y){
-    num = n;
-    new_chord = -1;
-    i = x;
-    j = y;
-}
-
-void Node::path_assign(Node* n){
-    path.push_back(n);
-}
-
-int Node::get_num(){
-    return num;
-}
-
-void Node::num_assign(int n){
-    num = n;
-}
-
-void Node::chord_assign(int c){
-    new_chord = c;
-}
-
-void Node::traverse(vector<int>* list){
-    // cout << "i,j=" << i  <<" "<< j << endl;
-    // if(new_chord != -1){
-    //     cout << "newly added: " << new_chord << endl;
-    //     list->push_back(new_chord);
-    // }
-    // for(int k = 0; k < path.size(); k++){
-    //     path[k]->traverse(list); 
-    // }
-}
-
-
 void traverse(int i, int j, ChordSet* C, vector<int>* list, short** M){
     switch(M[i][j]){
         case 1:

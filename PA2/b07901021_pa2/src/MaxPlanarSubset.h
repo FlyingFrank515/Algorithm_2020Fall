@@ -28,23 +28,5 @@ class ChordSet{
 
 };
 
-class Node{
-    public:
-        Node();
-        Node(int, int, int);
-        void path_assign(Node*);
-        int get_num();
-        void num_assign(int);
-        void chord_assign(int);
-        void traverse(vector<int>*);
-        
-    private:
-        vector<Node*> path;
-        int new_chord;
-        int num;
-        int i;
-        int j;
-        
-};
 void traverse(int, int, ChordSet*, vector<int>*, short**);
 #endif

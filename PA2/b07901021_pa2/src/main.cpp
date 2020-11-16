@@ -71,15 +71,7 @@ int main(int argc, char* argv[])
 
     //////////// Algorithm ////////////
     if(DEBUG) cout << "counting..." << endl;
-    
-    // char  **a;
-    // int i ,j;
-    // char ch = 'a';
-    // a = (char **)malloc(sizeof( char *) * ROW)
-    // for (i = 0; i < ROW; i++)
-    // {
-    //     a[i] = (char *)malloc(sizeof(char) *COL);
-    // }
+
     short **M;
     int **M_aux;
     M = (short **)malloc(sizeof(short*) * N);
@@ -130,10 +122,11 @@ int main(int argc, char* argv[])
         }
     }
     
-    // need to be modified
+    //////////// report time and memory///////////
     tmusg.getPeriodUsage(stat);
     cout <<"The total CPU time: " << (stat.uTime + stat.sTime) / 1000.0 << "ms" << endl;
     cout <<"memory: " << stat.vmPeak << "KB" << endl; // print peak memory
+    
     //////////// write the output file ///////////
     
     fout << chordlist.size() << endl;
