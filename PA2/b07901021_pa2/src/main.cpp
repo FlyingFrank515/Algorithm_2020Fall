@@ -72,10 +72,9 @@ int main(int argc, char* argv[])
     //////////// Algorithm ////////////
     if(DEBUG) cout << "counting..." << endl;
 
-    int **M;
-    M = (int **)malloc(sizeof(int*) * N);
+    int **M = new int* [N];
     for(int i = 0; i < N; i++){
-        M[i] = (int *)malloc(sizeof(int) * N);
+        M[i] = new int[N];
     }
     
     for(int l = 0; l < N; l++){
@@ -107,17 +106,7 @@ int main(int argc, char* argv[])
             }
         }
     }
-    vector<int> chordlist;
-    traverse(0, N-1, &C, &chordlist, M);
     
-    // sort(chordlist.begin(), chordlist.end());
-    
-    if(DEBUG){
-        cout << "N = " << chordlist.size() << endl;
-        for(int i = 0; i < chordlist.size(); i++){
-            cout << chordlist[i] << " " <<  C.find_connection(chordlist[i]) << endl;
-        }
-    }
     
     //////////// report time and memory///////////
     tmusg.getPeriodUsage(stat);
@@ -125,11 +114,11 @@ int main(int argc, char* argv[])
     cout <<"memory: " << stat.vmPeak << "KB" << endl; // print peak memory
     
     //////////// write the output file ///////////
+    fout << M[0][N-1] << endl;
+    traverse(0, N-1, &C, fout, M);
     
-    fout << chordlist.size() << endl;
-    for(int i = 0; i < chordlist.size(); i++){
-        fout << chordlist[i] << " " <<  C.find_connection(chordlist[i]) << endl;
-    }
+    
+    
     fin.close();
     fout.close();
     return 0;

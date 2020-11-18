@@ -10,8 +10,7 @@
 
 #include <iostream>
 #include <vector>
-#include <stdio.h>
-#include <stdlib.h>
+#include <fstream>
 using namespace std;
 
 class ChordSet{
@@ -28,5 +27,5 @@ class ChordSet{
 
 };
 
-void traverse(int, int, ChordSet*, vector<int>*, int**);
+void traverse(int, int, ChordSet*, fstream &, int**);
 #endif

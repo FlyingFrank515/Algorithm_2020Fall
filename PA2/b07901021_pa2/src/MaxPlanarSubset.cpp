@@ -42,28 +42,28 @@ void ChordSet::test(){
     }
 }
 
-void traverse(int i, int j, ChordSet* C, vector<int>* list, int** M){
+void traverse(int i, int j, ChordSet* C, fstream& fout, int** M){
     int k = C->find_connection(j);
     if(!M[i][j]) return;
     else if((k > j) || (k < i)){    
-        traverse(i, j-1, C, list, M);
+        traverse(i, j-1, C, fout, M);
     }
     
     else if(k == i){    
-        list->push_back(i);
-        traverse(i+1, j-1, C, list, M);
+        fout << i << " " << j << endl;
+        traverse(i+1, j-1, C, fout, M);
     }
     
     else if(k < j && k > i){                
         int A = M[i][j-1];
         int B = M[i][k-1] + 1 + M[k+1][j-1];
         if(A >= B){
-            traverse(i, j-1, C, list, M);
+            traverse(i, j-1, C, fout, M);
         }
         else{
-            traverse(i, k-1, C, list, M);
-            list->push_back(k);
-            traverse(k+1, j-1, C, list, M);
+            traverse(i, k-1, C, fout, M);
+            fout << k << " " << j << endl;
+            traverse(k+1, j-1, C, fout, M);
         }
     }
 
