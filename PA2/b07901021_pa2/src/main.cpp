@@ -76,48 +76,52 @@ int main(int argc, char* argv[])
     for(int i = 0; i < N; i++){
         M[i] = new int[N];
     }
-    
-    for(int l = 0; l < N; l++){
-        for(int i = 0; i < N - l; i++){        
-            int j = i + l;      
-            if(i == j){
-                M[i][j] = 0;
-                continue;
-            } 
-            int k = C.find_connection(j);
-            
-            if((k > j) || (k < i)){    
-                M[i][j] = M[i][j-1];
-            }
-            
-            else if(k == i){    
-                M[i][j] = M[i+1][j-1] + 1;
-            }
-            
-            else if(k < j && k > i){                
-                int A = M[i][j-1];
-                int B = M[i][k-1] + 1 + M[k+1][j-1];
-                if(A >= B){
-                    M[i][j] = A;
-                }
-                else{
-                    M[i][j] = B;
-                }
-            }
-        }
+    for(int i = 0; i < N; i++){
+        for(int j = 0; j < N; j++){
+            M[i][j] = -1;
+        } 
     }
     
+    M[0][N-1] = MPS(0, N-1, &C, M);
     
-    //////////// report time and memory///////////
-    tmusg.getPeriodUsage(stat);
-    cout <<"The total CPU time: " << (stat.uTime + stat.sTime) / 1000.0 << "ms" << endl;
-    cout <<"memory: " << stat.vmPeak << "KB" << endl; // print peak memory
+    // for(int l = 0; l < N; l++){
+    //     for(int i = 0; i < N - l; i++){        
+    //         int j = i + l;      
+    //         if(i == j){
+    //             M[i][j] = 0;
+    //             continue;
+    //         } 
+    //         int k = C.find_connection(j);
+            
+    //         if((k > j) || (k < i)){    
+    //             M[i][j] = M[i][j-1];
+    //         }
+            
+    //         else if(k == i){    
+    //             M[i][j] = M[i+1][j-1] + 1;
+    //         }
+            
+    //         else if(k < j && k > i){                
+    //             int A = M[i][j-1];
+    //             int B = M[i][k-1] + 1 + M[k+1][j-1];
+    //             if(A >= B){
+    //                 M[i][j] = A;
+    //             }
+    //             else{
+    //                 M[i][j] = B;
+    //             }
+    //         }
+    //     }
+    // }
     
     //////////// write the output file ///////////
     fout << M[0][N-1] << endl;
     traverse(0, N-1, &C, fout, M);
     
-    
+    //////////// report time and memory///////////
+    tmusg.getPeriodUsage(stat);
+    cout <<"The total CPU time: " << (stat.uTime + stat.sTime) / 1000.0 << "ms" << endl;
+    cout <<"memory: " << stat.vmPeak << "KB" << endl; // print peak memory
     
     fin.close();
     fout.close();

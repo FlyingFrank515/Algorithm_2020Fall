@@ -26,6 +26,6 @@ class ChordSet{
         vector<int> data;
 
 };
-
+int MPS(int, int, ChordSet*, int**);
 void traverse(int, int, ChordSet*, fstream &, int**);
 #endif

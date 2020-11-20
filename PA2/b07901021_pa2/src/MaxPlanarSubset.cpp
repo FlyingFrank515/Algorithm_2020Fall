@@ -41,11 +41,36 @@ void ChordSet::test(){
         cout << i << "---" << data[i] << endl;
     }
 }
-
-void traverse(int i, int j, ChordSet* C, fstream& fout, int** M){
+int MPS(int i, int j, ChordSet* C, int** M){
+    // cout << "fill in " << "M[" << i << "][" << j << "]" << endl;
+    if(M[i][j] != -1) return M[i][j];
+    if(i >= j){
+        M[i][j] = 0;
+        return 0;
+    }
     int k = C->find_connection(j);
+    
+    if((k > j) || (k < i)){    
+        M[i][j] = MPS(i, j-1, C, M);
+    }
+    
+    else if(k == i){    
+        M[i][j] = MPS(i+1, j-1, C, M) + 1;
+    }
+    
+    else if(k < j && k > i){                
+        int A = MPS(i, j-1, C, M);
+        int B = MPS(i, k-1, C, M) + 1 + MPS(k+1, j-1, C, M);
+        M[i][j] = (A >= B) ? A : B;
+    }
+    return M[i][j];
+}
+void traverse(int i, int j, ChordSet* C, fstream& fout, int** M){
+    
     if(!M[i][j]) return;
-    else if((k > j) || (k < i)){    
+    int k = C->find_connection(j);
+    
+    if((k > j) || (k < i)){    
         traverse(i, j-1, C, fout, M);
     }
     
