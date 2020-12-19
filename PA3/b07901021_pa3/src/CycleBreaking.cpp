@@ -60,9 +60,9 @@ void Graph::cyclebreak(fstream& fout){
         // directed:
         // (1) treat all edges as undirected edges and find the minimum spanning tree
         // (2) compare the MST to origin edge and find the deleted 
-        // (3) trying add back edges with positive weight in decreasing order
+        // (3) trying add back edges with "positive weight" in decreasing order
         // (4) run DFS to check whether the edge added will cause cycle in the Graph
-        // (5) if not, add it back to the
+        // (5) if not, add it back
         // (6) compare the final result to origin edge and find the deleted edge
         
         MST_Kruskal();
