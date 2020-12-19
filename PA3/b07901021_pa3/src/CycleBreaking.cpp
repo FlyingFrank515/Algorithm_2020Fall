@@ -182,18 +182,21 @@ void Graph::output_d(fstream& fout){
     
     // check for validity
     // create an new graph then check whether there are cycles
-    Graph G_check(type, n);
-    int total = 0;
-    for(int i = 0; i < n; i++){
-        for(int j = 0; j < n; j++){
-            if(A[i][j] != 666){
-                total++;
-                G_check.E_construct(i, j, A[i][j]);
-            }
-        }
-    }
-    cout << "there are " << total << " edges"  << endl;
-    DFS_cycle_detecting_check();
+    
+    ////---------------------------------------------------------------------
+    // Graph G_check(type, n);
+    // int total = 0;
+    // for(int i = 0; i < n; i++){
+    //     for(int j = 0; j < n; j++){
+    //         if(A[i][j] != 666){
+    //             total++;
+    //             G_check.E_construct(i, j, A[i][j]);
+    //         }
+    //     }
+    // }
+    // cout << "there are " << total << " edges"  << endl;
+    // DFS_cycle_detecting_check();
+    ////----------------------------------------------------------------------
 }
 
 void Graph::DFS_cycle_detecting_check(){
