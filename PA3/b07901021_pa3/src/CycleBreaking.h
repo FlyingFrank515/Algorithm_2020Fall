@@ -65,10 +65,10 @@ class Graph
         int n;
         // weight[i][j] means the weight of edge(i,j)(-100~100)
         // if no edges between (i,j), weight[i][j] = 666
-        vector<vector<int>> weight;
-        vector<vector<int>> A;
+        vector<vector<int> > weight;
+        vector<vector<int> > A;
         vector<Edge> E;
-        vector<vector<int>> adj;
+        vector<vector<int> > adj;
         vector<Vertex> V;
 };
 
