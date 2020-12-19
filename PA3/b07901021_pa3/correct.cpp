@@ -1,3 +1,27 @@
+// this is the checker for PA3, NTUEE, algorithm, 2020 fall
+// produced by b07901021 SHIH-HSUAN PAN in 2020/12/19
+// compile:    g++ correct.cpp -o correct
+// run:        ./correct <original_input_file> <output_file_you_produced>
+// 
+// (1) the program will first read the original input file and construct graph 
+//     (only consider the edge without considering the weight)
+// (2) then the output file you produced will be readed
+// (3) according to your output file, some edges in the graph will be removed
+//     also, the program will check whether the edge you removed is in the original input file   
+//     however, the order of undirected edges doesnt follow the order in the original input file 
+// (4) then the program will run DFS-smiliary algorithm to check the existence of cycles
+//     after running the DFS, look all vertices color 
+//     all color should be black -> it means all vertices are connected
+// 
+// summary:
+// the program will check
+// (1) whether you delete some edges not in the original input file
+// (2) whether all vertices are connected
+// (3) whether there is any cycle in your graph aftering removing edges you specified
+// 
+// if there is any problem about this checker, please send email to me to discuss about it
+// email: b07901021@ntu.edu.tw
+
 #include <cstring>
 #include <fstream>
 #include <vector>
