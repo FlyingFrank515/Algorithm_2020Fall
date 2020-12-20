@@ -44,7 +44,7 @@ class Graph
     private:
         char type;
         int n;
-        vector<vector<int>> adj;
+        vector<vector<int> > adj;
 };
 
 Graph::Graph(char t, int num){
