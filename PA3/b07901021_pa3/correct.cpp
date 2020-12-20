@@ -1,5 +1,5 @@
 // this is the checker for PA3, NTUEE, algorithm, 2020 fall
-// produced by b07901021 SHIH-HSUAN PAN in 2020/12/19
+// produced by b07901021 SHIH-HSUAN PAN in 2020/12/20
 // compile:    g++ correct.cpp -o correct
 // run:        ./correct <original_input_file> <output_file_you_produced>
 // 
@@ -10,13 +10,13 @@
 //     also, the program will check whether the edge you removed is in the original input file   
 //     however, the order of undirected edges doesnt follow the order in the original input file 
 // (4) then the program will run DFS-smiliary algorithm to check the existence of cycles
-//     after running the DFS, look all vertices color 
-//     all color should be black -> it means all vertices are connected
+// (5) treating all directed edges as undirected, then start traverse all vertices to see 
+//     whether all vertices are weakly connected
 // 
 // summary:
 // the program will check
 // (1) whether you delete some edges not in the original input file
-// (2) whether all vertices are connected
+// (2) whether all vertices are weakly connected
 // (3) whether there is any cycle in your graph aftering removing edges you specified
 // 
 // if there is any problem about this checker, please send email to me to discuss about it
@@ -39,6 +39,8 @@ class Graph
         void E_delete(int, int);
         void DFS_cycle_detecting_check();
         void DFS_visit_check(int, vector<char>&, vector<int>&);
+        void weakly_connected_check();
+        void traverse(int, vector<char>&, vector<vector<int> >&);
     private:
         char type;
         int n;
@@ -86,11 +88,6 @@ void Graph::DFS_cycle_detecting_check(){
         if(color[i] == 'w')
             DFS_visit_check(i, color, pi);
     }
-    for(int i = 0; i < n; i++){
-        if(color[i] != 'b'){
-            cout << "weong!! there are some verices that are not be connected" << endl;
-        }
-    }
 }
 void Graph::DFS_visit_check(int u, vector<char>& color, vector<int>& pi){
     color[u] = 'g';
@@ -106,6 +103,42 @@ void Graph::DFS_visit_check(int u, vector<char>& color, vector<int>& pi){
         else if(color[v] == 'g' && type == 'u'){
             if(v != pi[u])
                 cout << "wrong!! there are cycles in your graph" << endl;
+        }
+    }
+    color[u] = 'b';
+}
+void Graph::weakly_connected_check(){
+    vector<vector<int> > adj_matrix;
+    vector<char> color(n, 'w');
+    for(int i = 0; i < n; i++){
+        vector<int> temp(n, 0);
+        adj_matrix.push_back(temp);
+    }
+    for(int i = 0; i < n; i++){
+        for(int j = 0; j < adj[i].size(); j++){
+            int u = i;
+            int v = adj[i][j];
+            adj_matrix[u][v] = 1;
+            adj_matrix[v][u] = 1;
+        }
+    }
+    traverse(0, color, adj_matrix);
+    for(int i = 0; i < n; i++){
+        if(color[i] == 'w'){
+            cout << "wrong!! all vertices are not weakly connected" << endl;
+            break;
+        }
+    }
+
+}
+void Graph::traverse(int u, vector<char>& color, vector<vector<int> >& m){
+    color[u] = 'g';
+    for(int i = 0; i < m[u].size(); i++){
+        if(m[u][i] == 1){
+            int v = i;
+            if(color[v] == 'w'){
+                traverse(v, color, m);
+            }
         }
     }
     color[u] = 'b';
@@ -163,6 +196,9 @@ int main(int argc, char* argv[])
 
     cout << "checking cycle existance" << endl;
     G.DFS_cycle_detecting_check();
+
+    cout << "checking connected" << endl;
+    G.weakly_connected_check();
 
     cout << "checking finished" << endl;
 }
