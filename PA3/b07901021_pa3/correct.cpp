@@ -73,7 +73,7 @@ void Graph::E_delete(int u, int v){
         if (it1 != adj[u].end() && it2 != adj[v].end()) {
             adj[u].erase(it1);
             adj[v].erase(it2);
-            cout << "deleting edge(" << u << ", " << v << ")" << endl;
+            // cout << "deleting edge(" << u << ", " << v << ")" << endl;
         }
         else{
             cout << "wrong!! your output file deletes edge not in original input file" << endl;
@@ -182,8 +182,9 @@ int main(int argc, char* argv[])
 
     cout << "processing output file..." << endl;
     vector<int> data_d;
-    int num_d, garbage;
-    fin_d >> garbage;
+    int num_d, total;
+    fin_d >> total;
+    cout << "sum of deleted edge weight = " << total << endl;
     while (fin_d >> num_d){
         data_d.push_back(num_d);
     }
