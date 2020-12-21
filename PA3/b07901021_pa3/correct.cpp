@@ -62,7 +62,7 @@ void Graph::E_construct(int u, int v){
 
 void Graph::E_delete(int u, int v){
     if(type == 'd'){
-        cout << "deleting edge(" << u << ", " << v << ")" << endl;
+        // cout << "deleting edge(" << u << ", " << v << ")" << endl;
         vector<int>::iterator it = find (adj[u].begin(), adj[u].end(), v);
         if (it != adj[u].end()) adj[u].erase(it);
         else cout << "wrong!! your output file deletes edge not in original input file" << endl;
