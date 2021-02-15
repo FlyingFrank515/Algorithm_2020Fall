@@ -1,4 +1,0 @@
-under b07901021_pa3
-compile：make 
-clean all .o files：make clean
-run：./bin/cb <input files> <output files>
