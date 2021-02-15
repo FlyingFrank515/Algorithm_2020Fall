@@ -1,7 +1,7 @@
 *.xlsx
 *.tgz
 .vscode/
-.inputs/
-.outputs/
-.doc/
+inputs/
+outputs/
+doc/
 *.o
